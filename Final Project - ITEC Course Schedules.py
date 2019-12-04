@@ -9,4 +9,8 @@
 # 6. The credits for the course
 # 7. The instructor
 
+import beautifulsoup4 as beautifulsoup4
 
+pip install beautifulsoup4
+
+# fpp
