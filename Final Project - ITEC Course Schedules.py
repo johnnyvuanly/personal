@@ -9,8 +9,15 @@
 # 6. The credits for the course
 # 7. The instructor
 
+# Beautiful Soup is a module for extracting information from an HTML page
 import beautifulsoup4 as beautifulsoup4
 
+# Used to install Beautiful Soup, Version 4
 pip install beautifulsoup4
 
-# fpp
+# To import Beautiful Soup you run import bs4, this parses which analyze and identify the parts of HTML file on the hard drive
+import requests, bs4
+
+# Had to install package requests
+res = requests.get('https://eservices.minnstate.edu/registration/search/advancedSubmit.html?campusid=305&searchrcid=0305&searchcampusid=305&yrtr=20205&subject=ITEC&courseNumber=&courseId=&openValue=OPEN_PLUS_WAITLIST&delivery=ALL&showAdvanced=&starttime=&endtime=&mntransfer=&credittype=ALL&credits=&instructor=&keyword=&begindate=&site=&resultNumber=250')
+
