@@ -9,23 +9,27 @@ Write a program that reads the MCTC "Course Search Results" page, parses that pa
 6. The credits for the course
 7. The instructor'''
 
-import requests # requests module lets you easily download files from the Web
-from bs4 import BeautifulSoup # Had to install beautifulsoup4 or bs4 which allows me to extract information from an HTML page
+# requests module lets you easily download files from the Web
+# Had to install beautifulsoup4 or bs4 which allows me to extract information from an HTML page
+import requests, bs4
 
 # Request the URL we want to work with
-page = requests.get('https://eservices.minnstate.edu/registration/search/advancedSubmit.html?campusid=305&searchrcid'
+res = requests.get('https://eservices.minnstate.edu/registration/search/advancedSubmit.html?campusid=305&searchrcid'
                     '=0305&searchcampusid=305&yrtr=20205&subject=ITEC&courseNumber=&courseId=&openValue'
                     '=OPEN_PLUS_WAITLIST&delivery=ALL&showAdvanced=&starttime=&endtime=&mntransfer=&credittype=ALL'
                     '&credits=&instructor=&keyword=&begindate=&site=&resultNumber=250')
-
 try:
-    page.raise_for_status()  # Checks to see if there was an error downloading the file and will do nothing if it succeeded
+    # raise_for_status raises an exception if there was an error downloading the file and will do nothing if the
+    # download succeeded
+    res.raise_for_status()
 except Exception as exc:
+    # prints this statement if download failed "There was a problem: 404 Client Error: Not Found"
     print('There was a problem: %s' % (exc))
 
-
-# Creates a beautiful soup object from the request above.
-soup = BeautifulSoup(page.content, 'html.parser')
+# Creates a beautiful soup object that is stored in the variable soup
+soup = bs4.BeautifulSoup(res.content, 'html.parser')
+# Return value
 type(soup)
 
-print(soup)
+Container = soup.select('div', class_='yui-dt')
+
