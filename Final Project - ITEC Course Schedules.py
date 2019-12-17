@@ -30,40 +30,58 @@ except Exception as exc:
 # Creates a beautiful soup object that is stored in the variable soup
 soup = BeautifulSoup(res.content, 'html.parser')
 
-# grab the table of web page and use the data within it. Inside of <div id="resultsContainer">
+# Grab the table of web page and use the data within it. Inside of <div id="resultsContainer">
 tableTag = soup.find(id='resultsTable')
 
-
+# Create a list where row data will go into
 resRows = []
+# Finds all the 'tr' tags which defines a row in the table
 rowTags = tableTag.find_all('tr')
+# Use the first list where we find all the 'th' tags which defines a header cell in a table
 headerTags = rowTags[0].findAll('th')
+# List Created where the headers found will go into and locate need columns
 headers = []
+# For all headers found in headerTags
 for headerTag in headerTags:
+    # Add just the text to headers list and remove leading and trailing spaces with strip()
     headers.append(headerTag.text.strip())
-#print(headers)
-for rowTag in rowTags:
-    columnTags = rowTag.findAll('td')
-    resCol = []
-    for columnTag in columnTags:
-        resCol.append(columnTag.text.strip())
-    resRows.append(resCol)
-#print(resRows)
+# Print statement below used to test if we got the headers
+# print(headers)
 
-#[0-"" 1-'ID #', 2-'Subj', 3-'#', 4-'Sec', 5-'Title', 6-'Dates', 7-'Days', 8-'Time', 9-'Cr/Hr',
-# 10-'Status', 11-'Instructor', 12-'Delivery Method', 13-'Loc']
-colIndices = [1, 3, 5, 7, 8, 9, 11]
-listCols = [[], [], [], [], [], [], []]
-for rowTag in rowTags[1:]:
+# For the sections in the rows
+for rowTag in rowTags:
+    # Extract the 'td tags
     columnTags = rowTag.findAll('td')
+    # Create list of rows split by columns
+    resCol = []
+    # For section in rows
+    for columnTag in columnTags:
+        # Add list of just the text to resCol list
+        resCol.append(columnTag.text.strip())
+    # Add new row sectioned list to master list resRows
+    resRows.append(resCol)
+# Print statement below used to test if we get lists of rows
+# print(resRows)
+
+
+# 1-'ID #', 3-'#', 5-'Title', 7-'Days', 8-'Time', 9-'Cr/Hr', 11-'Instructor'
+colIndices = [1, 3, 5, 7, 8, 9, 11]
+# List of list column text will be stored in
+listCols = [[], [], [], [], [], [], []]
+# For sections in second row list
+for rowTag in rowTags[1:]:
+    # Find all cells
+    columnTags = rowTag.findAll('td')
+    # Integer created that starts at 0
     i = 0
+    # For certain list within colIndices
     for colIndex in colIndices:
+        # Get just the text and remove certain text and lines with spaces instead
         value = columnTags[colIndex].text.strip().replace('\xa0', ' ').replace('\n', ' ')
+        # Assigns which data goes into what list in listCols
         listCols[i].append(value)
+        # Designates which data goes where with number which number goes with what list
         i = i + 1
-    #resCol = []
-    #for columnTag in columnTags:
-    #    resCol.append(columnTag.text.strip())
-    #resRows.append(resCol)
 print(listCols)
 
 
