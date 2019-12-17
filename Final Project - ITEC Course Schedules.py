@@ -40,7 +40,8 @@ tableTag = soup.find(id='resultsTable')
 resRows = []
 # Finds all the 'tr' tags which defines a row in the table
 rowTags = tableTag.find_all('tr')
-# Use the first list where we find all the 'th' tags which defines a header cell in a table
+# Use the first list where we find all the 'th' tags which defines a header cell in a table. This is how we start to
+# break rows into columns
 headerTags = rowTags[0].findAll('th')
 # List Created where the headers found will go into and locate need columns
 headers = []
@@ -53,7 +54,7 @@ for headerTag in headerTags:
 
 # For the sections in the rows
 for rowTag in rowTags:
-    # Extract the 'td tags
+    # Extract the 'td tags from every row
     columnTags = rowTag.findAll('td')
     # Create list of rows split by columns
     resCol = []
@@ -65,7 +66,6 @@ for rowTag in rowTags:
     resRows.append(resCol)
 # Print statement below used to test if we get lists of rows
 # print(resRows)
-
 
 # 1-'ID #', 3-'#', 5-'Title', 7-'Days', 8-'Time', 9-'Cr/Hr', 11-'Instructor'
 colIndices = [1, 3, 5, 7, 8, 9, 11]
@@ -85,7 +85,7 @@ for rowTag in rowTags[1:]:
         listCols[i].append(value)
         # Designates which data goes where with number which number goes with what list
         i = i + 1
-print(listCols)
+#print(listCols)
 
 # Makes a new workbook
 workbook = Workbook()
@@ -93,7 +93,38 @@ workbook = Workbook()
 # Get the active sheet
 worksheet = workbook.active
 
-for index, id_numbers in enumerate(listCols[0]):
-    worksheet.cell(index + 1, 1, id_numbers)
+# Writes a column title to a cell row = 1, column = 1
+worksheet.cell(1, 1, 'ID Number')
+# row = 1, column = 2
+worksheet.cell(1, 2, 'Course Number')
+# row = 1, column = 3 etc
+worksheet.cell(1, 3, 'Course Title')
+worksheet.cell(1, 4, 'Day')
+worksheet.cell(1, 5, 'Time')
+worksheet.cell(1, 6, 'Credits')
+worksheet.cell(1, 7, 'Instructor')
 
-workbook.save('Final Project - ITEC Course Schedules')
+# In the list of list, listCols it pulls the first list and prints to row = 2, column = 1
+for index, id_numbers in enumerate(listCols[0]):
+    worksheet.cell(index + 2, 1, id_numbers)
+# prints course numbers starting in row 2, column 2 and down the rows
+for index, course_number in enumerate(listCols[1]):
+    worksheet.cell(index + 2, 2, course_number)
+# prints course titles starting in row 2, column 3 and down the rows
+for index, course_title in enumerate(listCols[2]):
+    worksheet.cell(index + 2, 3, course_title)
+# prints days of the week starting in row 2, column 4 and down the rows
+for index, days in enumerate(listCols[3]):
+    worksheet.cell(index + 2, 4, days)
+# prints times classes meet starting in row 2, column 5 and down the rows
+for index, times in enumerate(listCols[4]):
+    worksheet.cell(index + 2, 5, times)
+# prints the number of credits starting in row 2, column 6 and down the rows
+for index, numb_of_credit in enumerate(listCols[5]):
+    worksheet.cell(index + 2, 6, numb_of_credit)
+# prints the 7th list in listCols starting in row 2, column 7 which are the instructors names
+for index, instructors in enumerate(listCols[6]):
+    worksheet.cell(index + 2, 7, instructors)
+
+# Saves workbook
+workbook.save('Final Project - ITEC Course Schedules.xlsx')
