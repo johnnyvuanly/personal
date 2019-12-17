@@ -13,12 +13,15 @@ Write a program that reads the MCTC "Course Search Results" page, parses that pa
 import requests
 # Had to install beautifulsoup4 or bs4 which allows me to extract information from an HTML page
 from bs4 import BeautifulSoup
+# Allows me to write to Excel
+from openpyxl import Workbook
+
 
 # Request the URL we want to work with
 res = requests.get('https://eservices.minnstate.edu/registration/search/advancedSubmit.html?campusid=305&searchrcid'
-                    '=0305&searchcampusid=305&yrtr=20205&subject=ITEC&courseNumber=&courseId=&openValue'
-                    '=OPEN_PLUS_WAITLIST&delivery=ALL&showAdvanced=&starttime=&endtime=&mntransfer=&credittype=ALL'
-                    '&credits=&instructor=&keyword=&begindate=&site=&resultNumber=250')
+                   '=0305&searchcampusid=305&yrtr=20205&subject=ITEC&courseNumber=&courseId=&openValue'
+                   '=OPEN_PLUS_WAITLIST&delivery=ALL&showAdvanced=&starttime=&endtime=&mntransfer=&credittype=ALL'
+                   '&credits=&instructor=&keyword=&begindate=&site=&resultNumber=250')
 try:
     # raise_for_status raises an exception if there was an error downloading the file and will do nothing if the
     # download succeeded
@@ -84,4 +87,13 @@ for rowTag in rowTags[1:]:
         i = i + 1
 print(listCols)
 
+# Makes a new workbook
+workbook = Workbook()
 
+# Get the active sheet
+worksheet = workbook.active
+
+for index, id_numbers in enumerate(listCols[0]):
+    worksheet.cell(index + 1, 1, id_numbers)
+
+workbook.save('Final Project - ITEC Course Schedules')
