@@ -30,29 +30,40 @@ except Exception as exc:
 # Creates a beautiful soup object that is stored in the variable soup
 soup = BeautifulSoup(res.content, 'html.parser')
 
-# container variable that stores the 'main' div or section of the web page
-container = soup.find(id='main')
-
-#id_number = container.find_all(class_='yui-dt0-col-ID yui-dt-col-ID yui-dt-sortable')
-
-#rows = container.find_all('tr')
-
-#for tr in rows:
-   # td = tr.find_all('td')
-   # row = [i.text for i in td]
-   # print(row)
+# grab the table of web page and use the data within it. Inside of <div id="resultsContainer">
+tableTag = soup.find(id='resultsTable')
 
 
 resRows = []
-rowTags = soup.find_all('tr')
+rowTags = tableTag.find_all('tr')
+headerTags = rowTags[0].findAll('th')
+headers = []
+for headerTag in headerTags:
+    headers.append(headerTag.text.strip())
+#print(headers)
 for rowTag in rowTags:
     columnTags = rowTag.findAll('td')
     resCol = []
     for columnTag in columnTags:
         resCol.append(columnTag.text.strip())
     resRows.append(resCol)
-print(resRows)
+#print(resRows)
 
-
+#[0-"" 1-'ID #', 2-'Subj', 3-'#', 4-'Sec', 5-'Title', 6-'Dates', 7-'Days', 8-'Time', 9-'Cr/Hr',
+# 10-'Status', 11-'Instructor', 12-'Delivery Method', 13-'Loc']
+colIndices = [1, 3, 5, 7, 8, 9, 11]
+listCols = [[], [], [], [], [], [], []]
+for rowTag in rowTags[1:]:
+    columnTags = rowTag.findAll('td')
+    i = 0
+    for colIndex in colIndices:
+        value = columnTags[colIndex].text.strip().replace('\xa0', ' ').replace('\n', ' ')
+        listCols[i].append(value)
+        i = i + 1
+    #resCol = []
+    #for columnTag in columnTags:
+    #    resCol.append(columnTag.text.strip())
+    #resRows.append(resCol)
+print(listCols)
 
 
