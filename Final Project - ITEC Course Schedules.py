@@ -30,7 +30,7 @@ except Exception as exc:
     # prints this statement if download failed "There was a problem: 404 Client Error: Not Found"
     print('There was a problem: %s' % (exc))
 
-# Creates a beautiful soup object that is stored in the variable soup
+# Creates a beautiful soup object that is stored in the variable soup. Gives us the HTML of page
 soup = BeautifulSoup(res.content, 'html.parser')
 
 # Grab the table of web page and use the data within it. Inside of <div id="resultsContainer">
@@ -81,11 +81,12 @@ for rowTag in rowTags[1:]:
     for colIndex in colIndices:
         # Get just the text and remove certain text and lines with spaces instead
         value = columnTags[colIndex].text.strip().replace('\xa0', ' ').replace('\n', ' ')
-        # Assigns which data goes into what list in listCols
+        # Start list with assign number 0 and add new edited list without extra text
         listCols[i].append(value)
-        # Designates which data goes where with number which number goes with what list
+        # Designates which column goes with what list increasing by one
         i = i + 1
-#print(listCols)
+# print statement below used to test if we get just a clean version of the list of just text
+# print(listCols)
 
 # Makes a new workbook
 workbook = Workbook()
