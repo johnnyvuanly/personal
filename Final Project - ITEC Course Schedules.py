@@ -36,6 +36,9 @@ soup = BeautifulSoup(res.content, 'html.parser')
 # Grab the table of web page and use the data within it. Inside of <div id="resultsContainer">
 tableTag = soup.find(id='resultsTable')
 
+'''This section breaks up the HTML into rows and gets more into the text I need. I also find the headers which help 
+slit things up by column '''
+
 # Create a list where row data will go into
 resRows = []
 # Finds all the 'tr' tags which defines a row in the table
@@ -52,6 +55,8 @@ for headerTag in headerTags:
 # Print statement below used to test if we got the headers
 # print(headers)
 
+'''Here I create list of rows of just the text and re add that to the rows list above'''
+
 # For the sections in the rows
 for rowTag in rowTags:
     # Extract the 'td tags from every row
@@ -66,6 +71,8 @@ for rowTag in rowTags:
     resRows.append(resCol)
 # Print statement below used to test if we get lists of rows
 # print(resRows)
+
+'''Here we create list of columns and clean up the text'''
 
 # 1-'ID #', 3-'#', 5-'Title', 7-'Days', 8-'Time', 9-'Cr/Hr', 11-'Instructor'
 colIndices = [1, 3, 5, 7, 8, 9, 11]
@@ -94,6 +101,8 @@ workbook = Workbook()
 # Get the active sheet
 worksheet = workbook.active
 
+'''Create the headers at the top of the Excel spread sheet'''
+
 # Writes a column title to a cell row = 1, column = 1
 worksheet.cell(1, 1, 'ID Number')
 # row = 1, column = 2
@@ -104,6 +113,8 @@ worksheet.cell(1, 4, 'Day')
 worksheet.cell(1, 5, 'Time')
 worksheet.cell(1, 6, 'Credits')
 worksheet.cell(1, 7, 'Instructor')
+
+'''Dump the list of data into certain columns in Excel'''
 
 # In the list of list, listCols it pulls the first list and prints to row = 2, column = 1
 for index, id_numbers in enumerate(listCols[0]):
