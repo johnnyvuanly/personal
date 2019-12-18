@@ -83,7 +83,7 @@ for rowTag in rowTags[1:]:
         value = columnTags[colIndex].text.strip().replace('\xa0', ' ').replace('\n', ' ')
         # Start list with assign number 0 and add new edited list without extra text
         listCols[i].append(value)
-        # Designates which column goes with what list increasing by one
+        # Designates which column goes with what list starting with 0 increasing by one
         i = i + 1
 # print statement below used to test if we get just a clean version of the list of just text
 # print(listCols)
@@ -129,3 +129,5 @@ for index, instructors in enumerate(listCols[6]):
 
 # Saves workbook
 workbook.save('Final Project - ITEC Course Schedules.xlsx')
+
+# Github URL: https://github.com/johnnyvuanly/personal/blob/master/Final%20Project%20-%20ITEC%20Course%20Schedules.py
